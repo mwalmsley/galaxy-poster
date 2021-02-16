@@ -173,6 +173,10 @@ def interactive_galaxies(df):
     valid = np.ones(len(df)).astype(bool)
     for question, answers in questions.items():
         answer, mean = current_selection.get(question, [None, None])  # mean is (min, max) limits
+        if len(mean) == 1:
+            # streamlit sharing bug is giving only the higher value
+            logging.info('Streamlit bug is happening, working around')
+            mean = (0., mean)
         logging.info(f'Current: {answer}, {mean}')
         # st.markdown('{} {} {} {}'.format(question, answers, answer, mean))
         if (answer is not None) and (mean is not None):
@@ -283,3 +287,6 @@ if __name__ == '__main__':
     df = load_data()
 
     main(df)
+
+
+# https://discuss.streamlit.io/t/values-slider/9434 streamlit sharing has a temp bug that sliders only show the top value
