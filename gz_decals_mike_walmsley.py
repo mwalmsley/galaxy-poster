@@ -1,4 +1,5 @@
 import json
+import logging
 
 import streamlit as st
 import numpy as np
@@ -168,6 +169,7 @@ def interactive_galaxies(df):
             current_selection[question] = None, None
 
     galaxies = df
+    logging.info('Total galaxies: {}'.format(len(galaxies)))
     valid = np.ones(len(df)).astype(bool)
     for question, answers in questions.items():
         answer, mean = current_selection.get(question, [None, None])
@@ -179,6 +181,7 @@ def interactive_galaxies(df):
             within_limits = (np.min(mean) <= prob) & (prob <= np.max(mean))
             valid = valid & within_limits
 
+    logging.info('Valid galaxies: {}'.format(valid.sum()))
     st.markdown('{} of 15,000 galaxies match your criteria.'.format(valid.sum()))
 
     # selected = galaxies[valid].sample(np.min([valid.sum(), 16]))
@@ -272,6 +275,8 @@ def load_data():
     return pd.read_csv('gz2_classifications.csv')
 
 if __name__ == '__main__':
+
+    logging.basicConfig(level=logging.INFO)
 
     df = load_data()
 
