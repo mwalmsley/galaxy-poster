@@ -179,7 +179,6 @@ def interactive_galaxies(df):
             # streamlit sharing bug is giving only the higher value
             logging.info('Streamlit bug is happening, working')
             mean = (0., mean[0])
-
         # st.markdown('{} {} {} {}'.format(question, answers, answer, mean))
         if (answer is not None) and (mean is not None):
             # this_answer = galaxies[question + '_' + answer + '_concentration_mean']
