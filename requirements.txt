@@ -1,0 +1,6 @@
+numpy
+pandas
+pillow
+matplotlib
+tensorflow
+tensorflow_probability
