@@ -11,7 +11,7 @@ import tensorflow_probability as tfp
 from PIL import Image
 
 def main(df):
-    st.title('Bayesian CNN for Galaxy Zoo DECaLS')
+    st.title('Bayesian Deep Learning for Galaxy Zoo DECaLS')
     st.subheader('by Mike Walmsley ([@mike\_walmsley\_](https://twitter.com/mike_walmsley_))')
 
     st.markdown(
