@@ -172,13 +172,15 @@ def interactive_galaxies(df):
     logging.info('Total galaxies: {}'.format(len(galaxies)))
     valid = np.ones(len(df)).astype(bool)
     for question, answers in questions.items():
-        answer, mean = current_selection.get(question, [None, None])
+        answer, mean = current_selection.get(question, [None, None])  # mean is (min, max) limits
+        logging.info(f'Current: {answer}, {mean}')
         # st.markdown('{} {} {} {}'.format(question, answers, answer, mean))
         if (answer is not None) and (mean is not None):
             this_answer = galaxies[question + '_' + answer + '_concentration_mean']
             all_answers = galaxies[[question + '_' + a + '_concentration_mean' for a in answers]].sum(axis=1)
             prob = this_answer / all_answers
             within_limits = (np.min(mean) <= prob) & (prob <= np.max(mean))
+            logging.info('Fraction of galaxies within limits: {}'.format(within_limits.mean()))
             valid = valid & within_limits
 
     logging.info('Valid galaxies: {}'.format(valid.sum()))
