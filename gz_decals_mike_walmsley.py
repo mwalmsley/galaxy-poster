@@ -290,7 +290,9 @@ def interactive_galaxies(df):
 
 @st.cache
 def load_data():
-    return pd.read_csv('decals.csv')
+    df_locs = ['decals_{}.csv'.format(n) for n in range(4)]
+    dfs = [pd.read_csv(df_loc) for df_loc in df_locs]
+    return pd.concat(dfs)
 
 if __name__ == '__main__':
 
