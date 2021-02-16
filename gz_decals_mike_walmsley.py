@@ -134,7 +134,7 @@ def interactive_galaxies(df):
     questions = {
         'bar': ['strong', 'weak', 'no'], 
         'has-spiral-arms': ['yes', 'no'],
-        'spiral-count': ['1', '2', '3', '4'],
+        'spiral-arm-count': ['1', '2', '3', '4'],
         'spiral-winding': ['tight', 'medium', 'loose'],
         'merging': ['merger', 'major-disturbance', 'minor-disturbance', 'none']
     }
