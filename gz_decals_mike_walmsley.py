@@ -12,24 +12,22 @@ from PIL import Image
 
 def main(df):
     st.title('Bayesian CNN for Galaxy Zoo DECaLS')
-    st.subheader('by Mike Walmsley')
+    st.subheader('by Mike Walmsley ([@mike\_walmsley\_](https://twitter.com/mike_walmsley_))')
 
     st.markdown(
     """
     
+    <br><br/>
+    Galaxy Zoo DECaLS includes deep learning classifications for all galaxies. 
 
-    The next Galaxy Zoo data release, GZ DECaLS, will include deep learning classifications for all galaxies. Here, we show a *sneak preview*.
-
-    Our model learns from uncertain volunteers and predicts well-calibrated posteriors for every Galaxy Zoo question.
+    Our model learns from volunteers and predicts posteriors for every Galaxy Zoo question.
 
     Explore the predictions using the filters on the left. Do you agree with the model?
-
-    You can show the posteriors for each question using the dropdown in the top left. The dashed vertical lines are what the humans said.
 
     To read more about how the model works, click below.
 
     """
-    )
+    , unsafe_allow_html=True)
     should_tell_me_more = st.button('Tell me more')
     if should_tell_me_more:
         tell_me_more()
@@ -121,9 +119,7 @@ def tell_me_more():
 
     Using this loss function, our model can predict posteriors with excellent calibration.
 
-    In production, we actually use an ensemble of models, and apply active learning - picking the galaxies where the models confidently disagree - to choose the most informative galaxies to label with Galaxy Zoo. But that's for another poster!
-    
-    If you'd like to hear more, I'm on Slack (Mike Walmsley) and Twitter (@mike_w_ai). Enjoy the conference.
+    For the final GZ DECaLS predictions, I actually use an ensemble of models, and apply active learning - picking the galaxies where the models confidently disagree - to choose the most informative galaxies to label with Galaxy Zoo. Check out the paper for more.
     
     """)
 
@@ -143,7 +139,8 @@ def interactive_galaxies(df):
     # st.sidebar.markdown('# Show posteriors')
     # show_posteriors = st.sidebar.selectbox('Posteriors for which question?', ['none'] + list(questions.keys()), format_func=lambda x: x.replace('-', ' ').capitalize())
 
-    st.sidebar.markdown('---')
+    st.sidebar.markdown('# Choose Your Galaxies')
+    # st.sidebar.markdown('---')
     current_selection = {}
     for question, answers in questions.items():
         valid_to_select = True
@@ -162,7 +159,7 @@ def interactive_galaxies(df):
             selected_answer = st.sidebar.selectbox('Answer', answers, format_func=lambda x: x.replace('-',' ').capitalize(), key=question+'_select')
             selected_mean = st.sidebar.slider(
                 label='Posterior Mean',
-                value=[.9],
+                value=[.0, 1.],
                 key=question+'_mean')
             current_selection[question] = (selected_answer, selected_mean)
             # and sort by confidence, for now
@@ -220,7 +217,7 @@ def interactive_galaxies(df):
     #             show_predictions(galaxy, question, answers, selected_answer)
     # else:
     # image_urls = ["https://panoptes-uploads.zooniverse.org/production/subject_location/02a32231-11c6-45b6-b448-fd85ec32fbd8.png"] * 16
-    selected = galaxies[valid][:32]
+    selected = galaxies[valid][:40]
     image_urls = selected['url']
 
     opening_html = '<div style=display:flex;flex-wrap:wrap>'
@@ -288,11 +285,19 @@ def interactive_galaxies(df):
 #     fig.tight_layout()
 #     st.write(fig)
 
+
+st.set_page_config(
+    layout="wide",
+    page_title='GZ DECaLS',
+    page_icon='gz_icon.jpeg'
+)
+
 @st.cache
 def load_data():
     df_locs = ['decals_{}.csv'.format(n) for n in range(4)]
     dfs = [pd.read_csv(df_loc) for df_loc in df_locs]
     return pd.concat(dfs)
+
 
 if __name__ == '__main__':
 
