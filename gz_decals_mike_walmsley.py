@@ -175,8 +175,8 @@ def interactive_galaxies(df):
         answer, mean = current_selection.get(question, [None, None])  # mean is (min, max) limits
         if len(mean) == 1:
             # streamlit sharing bug is giving only the higher value
-            logging.info('Streamlit bug is happening, working around')
-            mean = (0., mean)
+            logging.info('Streamlit bug is happening, working')
+            mean = (0., mean[0])
         logging.info(f'Current: {answer}, {mean}')
         # st.markdown('{} {} {} {}'.format(question, answers, answer, mean))
         if (answer is not None) and (mean is not None):
